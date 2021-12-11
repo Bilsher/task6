@@ -56,7 +56,7 @@ def recognize(region):
         			return "1"
         		if cb == 2:
         			return "/"
-        		cut_lakes, cut_cb = lakes_and_bays(region.image[2:-2, 2:-2])
+        		_, cut_cb = lakes_and_bays(region.image[2:-2, 2:-2])
         		if cut_cb == 4:
         			return "X"
         		if cut_cb == 5:
