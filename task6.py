@@ -33,34 +33,39 @@ def filling_factor(image):
 	return np.sum(image) / image.size
 
 def recognize(region):
-	if np.all(region.image):
-		return "-"
-	cl, cb = lakes_and_bays(region.image)
-	if cl == 2:
-		if has_vline(region.image):
-			return "B"
-		else:
-			return "8"
-	if cl == 1:
-		if cb == 3:
-			return "A"
-		else:
-			return "0"
-	if cl == 0:
-		if cb == 2:
-			return "/"
-		if cb == 3 and has_vline(region.image):
-			return "1"
-		cut_lakes, cut_bays = lakes_and_bays(region.image[2:-2, 2:-2])
-		if cut_bays == 4:
-			return "X"
-		if cut_bays == 5:
-			cy = region.image.shape[0] // 2
-			cx = region.image.shape[1] // 2
-			if region.image[cy, cx] > 0:
-				return "*"
-			return "W`"
-	return None
+    	if np.all(region.image):
+        		return "-"
+    	cl, cb = lakes_and_bays(region.image)
+    	if cl == 2:
+        		if has_vline(region.image):
+        			return "B"
+        		else:
+        			return "8"
+    	if cl == 1:
+        		if cb == 2:
+        			if region.image[region.image.shape[0]//2, region.image.shape[1]//2] > 0:
+        				return "P"
+        			else:
+        				return "D"
+        		elif cb == 3:
+        			return "A"
+        		else:
+        			return "0"
+    	if cl == 0:
+        		if has_vline(region.image):
+        			return "1"
+        		if cb == 2:
+        			return "/"
+        		cut_lakes, cut_cb = lakes_and_bays(region.image[2:-2, 2:-2])
+        		if cut_cb == 4:
+        			return "X"
+        		if cut_cb == 5:
+        			cy = region.image.shape[0]//2
+        			cx = region.image.shape[1]//2
+        			if region.image[cy, cx] > 0:
+        				return "*"
+        			return "W"
+    	return None
 
 
 image = plt.imread("symbols.png")
